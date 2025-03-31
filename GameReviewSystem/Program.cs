@@ -4,9 +4,10 @@ using FluentValidation.AspNetCore;
 using GameReviewSystem.Data;
 using GameReviewSystem.Services;
 using GameReviewSystem.Validators;
-using AutoMapper.Extensions.Microsoft.DependencyInjection; // For AddAutoMapper
+using AutoMapper;
 using Bogus;
 using GameReviewSystem.Models;
+using GameReviewSystem.Mapping;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,7 +24,7 @@ builder.Services.AddScoped<IReviewService, ReviewService>();
 
 // 3) AutoMapper
 // Make sure your package versions match. Possibly "14.0.0" for both:
-builder.Services.AddAutoMapper(typeof(Program).Assembly);
+builder.Services.AddAutoMapper(typeof(AppMappingProfile));
 
 // 4) Controllers + FluentValidation (NEW WAY)
 builder.Services.AddControllers();
