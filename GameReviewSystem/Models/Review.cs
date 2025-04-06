@@ -1,4 +1,7 @@
-﻿namespace GameReviewSystem.Models
+﻿using GameReviewSystem.Models;
+
+
+namespace GameReviewSystem.Models
 {
     public class Review
     {
@@ -6,11 +9,15 @@
         public int Rating { get; set; }
         public string Comment { get; set; } = string.Empty;
 
-        // Foreign Keys
+        // If this is a foreign key to the Game:
         public int GameId { get; set; }
-        public Game? Game { get; set; }
+        public Game Game { get; set; }  // Navigation property
 
+        // If this is a foreign key to the User:
         public int UserId { get; set; }
-        public User User { get; set; } // navigation back to user
+        public User User { get; set; }  // Navigation property
     }
 }
+
+
+

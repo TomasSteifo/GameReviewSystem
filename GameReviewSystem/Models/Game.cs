@@ -1,4 +1,6 @@
-﻿namespace GameReviewSystem.Models
+﻿using GameReviewSystem.Models;
+
+namespace GameReviewSystem.Models
 {
     public class Game
     {

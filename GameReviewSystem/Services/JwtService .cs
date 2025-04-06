@@ -3,7 +3,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
+using System.Text; // <-- Ensure there's a semicolon here
+// No need to "using GameReviewSystem.Services;" inside this file if this file itself is in that namespace
 
 namespace GameReviewSystem.Services
 {
@@ -27,13 +28,12 @@ namespace GameReviewSystem.Services
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            // 3) Define claims (e.g. name, role)
+            // 3) Define claims
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                new Claim(ClaimTypes.Name, user.Username),
-                // if you have user.Role:
-                // new Claim(ClaimTypes.Role, user.Role)
+                new Claim(ClaimTypes.Name, user.Username)
+                // e.g., new Claim(ClaimTypes.Role, user.Role) if you use roles
             };
 
             // 4) Create token descriptor
@@ -41,7 +41,7 @@ namespace GameReviewSystem.Services
                 issuer: issuer,
                 audience: audience,
                 claims: claims,
-                expires: DateTime.Now.AddDays(1),
+                expires: DateTime.Now.AddDays(1),   // set token expiration
                 signingCredentials: credentials);
 
             // 5) Return token string

@@ -9,6 +9,7 @@ using GameReviewSystem.Models;
 using GameReviewSystem.Services;
 using Microsoft.AspNetCore.Authorization;
 
+
 namespace GameReviewSystem.Controllers
 {
     [ApiController]
@@ -24,23 +25,20 @@ namespace GameReviewSystem.Controllers
             _jwtService = jwtService;
         }
 
-        // POST /api/auth/register
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDto dto)
         {
-            // 1) Check if username is taken
             if (await _context.Users.AnyAsync(u => u.Username == dto.Username))
                 return BadRequest("Username is already taken.");
 
-            // 2) Hash password (using BCrypt)
             var hashed = BCrypt.Net.BCrypt.HashPassword(dto.Password);
 
-            // 3) Create user
             var user = new User
             {
                 Username = dto.Username,
-                PasswordHash = hashed
-                // Optionally user.Role = "User"
+                PasswordHash = hashed,
+                Email = dto.Email,              // Ensure this is provided in your DTO
+                CreatedAt = DateTime.UtcNow     // Set a default value during registration
             };
 
             _context.Users.Add(user);
@@ -48,6 +46,8 @@ namespace GameReviewSystem.Controllers
 
             return Ok("User registered successfully.");
         }
+
+
 
         // POST /api/auth/login
         [HttpPost("login")]
@@ -79,14 +79,16 @@ namespace GameReviewSystem.Controllers
             return Ok("Hello, authorized user!");
         }
 
-    // DTOs for register/login
-    public class RegisterDto
-    {
-        public string Username { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
-    }
+        // DTOs for register/login
+        public class RegisterDto
+        {
+            public string Username { get; set; } = string.Empty;
+            public string Password { get; set; } = string.Empty;
+            public string Email { get; set; } = string.Empty;
+        }
 
-    public class LoginDto
+
+        public class LoginDto
     {
         public string Username { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
