@@ -4,6 +4,7 @@ using GameReviewSystem.DTOs;
 using System.Linq;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
+
 namespace GameReviewSystem.Mapping
 {
     public class AppMappingProfile : Profile
